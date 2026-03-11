@@ -3,10 +3,10 @@ from PySide6 import QtUiTools
 from PySide6.QtWidgets import QApplication
 from PySide6.QtWidgets import QMainWindow, QLineEdit, QPushButton, QLCDNumber
 
-from example.components.lexica import MyLexer
-from example.components.parsers import MyParser
-from example.components.memory import Memory
-from example.components.ui import Ui_MainWindow
+from components.lexica import MyLexer
+from components.parsers import MyParser
+from components.memory import Memory
+from components.ui import Ui_MainWindow
 
 class MainWindow(QMainWindow):
 
