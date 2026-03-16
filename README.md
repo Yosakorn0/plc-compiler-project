@@ -90,10 +90,10 @@ compiler-starter-project/
       |- ast/
           |- statement.py
       |- lexica.py            # lexical analyzer
-      |- main.ui              # GUI designed using PySide 6 Designer
+      |- main.ui              # GUI designed using PySide 6 Designer ,layout
       |- memory.py            # store variable during execution
       |- parsers.py           # parser => receive token and check with grammar
-  |- main.py                  # load ui and connect GUI
+  |- main.py                  # load ui and connect GUI, logic & controller
 ```
 
 Since the project is done just to showcase libraries and techniques, here we divided it into subsections to explain the code.
