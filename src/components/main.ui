@@ -95,12 +95,12 @@
       </item>
 
       <item>
-       <widget class="QLCDNumber" name="output_lcd">
+       <widget class="QLabel" name="output_lcd">
         <property name="digitCount">
          <number>9</number>
         </property>
         <property name="segmentStyle">
-         <enum>QLCDNumber::Flat</enum>
+         <enum>QLabel::Flat</enum>
         </property>
        </widget>
       </item>

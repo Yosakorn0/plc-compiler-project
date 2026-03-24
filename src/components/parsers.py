@@ -1,6 +1,6 @@
 # python -m components.parsers
-from components.lexica import MyLexer
-from components.memory import Memory
+from .lexica import MyLexer
+from .memory import Memory
 from sly import Parser
 
 class MyParser(Parser):
@@ -35,31 +35,54 @@ class MyParser(Parser):
 
     @_('expr')
     # S -> E
-    def statement(self, p) -> int:
+    def statement(self, p) -> tuple:
         return p.expr
 
     # The example with literals
     @_('expr AND expr')
-    # E -> E + E
     def expr(self, p):
-        # You can refer to the token 2 ways
-        # Way1: using array
-        print(f"Evaluating AND: {p.expr0} ^ {p.expr1}")
-        # Way2: using symbol name. 
-        # Here, if you have more than one symbols with the same name
-        # You have to indiciate the number at the end.
-        return p.expr0 and p.expr1
+        # Extract values
+        value1 = p.expr0[0]
+        value2 = p.expr1[0]
+
+        #Extract prefixes
+        prefix1 = p.expr0[1]
+        prefix2 = p.expr1[1]
+
+        # Evaluate AND
+        value = value1 and value2
+
+        #Build prefix expression
+        prefix = "^ " + prefix1 + " " + prefix2
+
+        print(f"Evaluating AND: {value1} ^ {value2} -> {value}")
+        return value, prefix
 
     # The example with normal token
     @_('expr OR expr')
     def expr(self, p):
-        print(f"Evaluating OR: {p.expr0} v {p.expr1}")
-        return p.expr0 or p.expr1
+        # Extract values
+        value1 = p.expr0[0]
+        value2 = p.expr1[0]
+
+        #Extract prefixes
+        prefix1 = p.expr0[1]
+        prefix2 = p.expr1[1]
+
+        # Evaluaete OR
+        value = value1 or value2
+
+        #Build prefix expression
+        prefix = "v " + prefix1 + " " + prefix2
+
+        print(f"Evaluating OR: {value1} v {value2} -> {value}")
+        return value, prefix
     
     @_('TRUTH')
     def expr(self, p):
         print(f"Reading TRUTH token: {p.TRUTH}")
-        return p.TRUTH == 't'
+        return p.TRUTH == 't', p.TRUTH
+        # return (boolean_value, prefix_string)
 
 
 if __name__ == "__main__":
@@ -75,7 +98,6 @@ if __name__ == "__main__":
     result = parser.parse(lexer.tokenize(text))
     print(result)
     # print(memory)
-
 
 
 # from components.ast.statement import Expression, Expression_math, Expression_number, Operations

@@ -3,10 +3,10 @@ from PySide6 import QtUiTools
 from PySide6.QtWidgets import QApplication
 from PySide6.QtWidgets import QMainWindow, QLineEdit, QPushButton, QLCDNumber
 
-from components.lexica import MyLexer
-from components.parsers import MyParser
-from components.memory import Memory
-from components.ui import Ui_MainWindow
+from .components.lexica import MyLexer
+from .components.parsers import MyParser
+from .components.memory import Memory
+from .components.ui import Ui_MainWindow
 
 class MainWindow(QMainWindow):
 
@@ -57,9 +57,21 @@ class MainWindow(QMainWindow):
         parser = MyParser()
         memory = Memory()
         input_text = self.ui.input_text.text()
-        result = parser.parse(lexer.tokenize(input_text))
-        print(type(result))
-        self.ui.output_lcd.display(result)
+
+        # Evaluate expression
+        value, prefix = parser.parse(lexer.tokenize(input_text))
+        print(type(value), type(prefix))
+        print(f"Value: {value}")
+        print(f"Prefix: {prefix}")
+
+        # Convert boolean to TRUE/FALSE string
+        result_text = "TRUE" if value else "FALSE"
+
+        # Update the label with out_put label and show the result in T and F with prefix
+        self.ui.output_label.setText(f"Result: {result_text}\nPrefix: {prefix}")
+        # Output bool value
+        self.ui.output_lcd.display(int(value))  # True -> 1, False -> 0
+
         # for debug
         print(memory)
 
