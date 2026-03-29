@@ -3,9 +3,10 @@ from .lexica import MyLexer
 from .memory import Memory
 from sly import Parser
 
+# Parser class for propositional logic expressions using sly library
 class MyParser(Parser):
-    debugfile = 'parser.out'
-    start = 'statement'
+    debugfile = 'parser.out'  # File for parser debugging output
+    start = 'statement'  # Starting grammar symbol
     # Get the token list from the lexer (required)
     tokens = MyLexer.tokens
     # Lower rows = higher precedence. So the parser reads it top → bottom.
@@ -15,14 +16,15 @@ class MyParser(Parser):
     #     ('right', UMINUS),            (associativity, operator1, operator2, ...),
     #     )
 
+    # Operator precedence: AND has higher precedence than OR
     # same line = same priority
     precedence = (
-        ('left', OR),
-        ('left', AND), #higher priority
+        ('left', OR),    # Left-associative OR
+        ('left', AND),   # Left-associative AND (higher priority)
     )
 
     def __init__(self):
-        self.memory:Memory = Memory()
+        self.memory:Memory = Memory()  # Initialize memory (not used in logic evaluator)
 
     # Variable assignment rule from template (not used in propositional logic evaluator)
     # rule meaning: statement → NAME = expr
@@ -33,71 +35,78 @@ class MyParser(Parser):
     #     self.memory.set(variable_name=var_name,value=value, data_type=type(value))
     #     # Note that I did not return anything
 
+    # Grammar rule: statement → expr
+    # Returns the result of the expression
     @_('expr')
     # S -> E
     def statement(self, p) -> tuple:
         return p.expr
 
-    # The example with literals
+    # Grammar rule: expr → expr AND expr
+    # Evaluates logical AND of two expressions
     @_('expr AND expr')
     def expr(self, p):
-        # Extract values
+        # Extract boolean values from subexpressions
         value1 = p.expr0[0]
         value2 = p.expr1[0]
 
-        #Extract prefixes
+        # Extract prefix notations
         prefix1 = p.expr0[1]
         prefix2 = p.expr1[1]
 
-        # Evaluate AND
+        # Evaluate AND operation
         value = value1 and value2
 
-        #Build prefix expression
+        # Build prefix expression: ^ prefix1 prefix2
         prefix = "^ " + prefix1 + " " + prefix2
 
-        print(f"Evaluating AND: {value1} ^ {value2} -> {value}")
+        print(f"Evaluating AND: {value1} ^ {value2} -> {value}")  # Debug output
         return value, prefix
 
-    # The example with normal token
+    # Grammar rule: expr → expr OR expr
+    # Evaluates logical OR of two expressions
     @_('expr OR expr')
     def expr(self, p):
-        # Extract values
+        # Extract boolean values from subexpressions
         value1 = p.expr0[0]
         value2 = p.expr1[0]
 
-        #Extract prefixes
+        # Extract prefix notations
         prefix1 = p.expr0[1]
         prefix2 = p.expr1[1]
 
-        # Evaluaete OR
+        # Evaluate OR operation
         value = value1 or value2
 
-        #Build prefix expression
+        # Build prefix expression: v prefix1 prefix2
         prefix = "v " + prefix1 + " " + prefix2
 
-        print(f"Evaluating OR: {value1} v {value2} -> {value}")
+        print(f"Evaluating OR: {value1} v {value2} -> {value}")  # Debug output
         return value, prefix
     
+    # Grammar rule: expr → TRUTH
+    # Base case: single truth value (t or f)
     @_('TRUTH')
     def expr(self, p):
-        print(f"Reading TRUTH token: {p.TRUTH}")
+        print(f"Reading TRUTH token: {p.TRUTH}")  # Debug output
+        # Convert 't' to True, 'f' to False; return tuple (bool, prefix)
         return p.TRUTH == 't', p.TRUTH
-        # return (boolean_value, prefix_string)
 
 
 if __name__ == "__main__":
+    # Test the parser with sample expressions
     lexer = MyLexer()
     # parser = MyParser()
-    text = "f v f ^ t" # final output "f"
-    # text = "t v f ^ f" # final output "t"
+    text = "f v f ^ t"  # Example: False OR (False AND True) -> False
+    # text = "t v f ^ f" # Example: True OR (False AND False) -> True
 
     # Memory is not used because propositional logic evaluator does not require variable storage
     # memory = Memory() 
     parser = MyParser()
-    # text = "1 + 2 + 3"
-    result = parser.parse(lexer.tokenize(text))
-    print(result)
-    # print(memory)
+    # text = "1 + 2 + 3"  # Not used for logic
+    result = parser.parse(lexer.tokenize(text))  # Parse and evaluate
+    print(result)  # Output: (bool_value, prefix_notation)
+    # print(memory)  # Not used
 
 
 # from components.ast.statement import Expression, Expression_math, Expression_number, Operations

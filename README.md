@@ -146,3 +146,51 @@ You can start to learn this tool from
 - [3rd party Tutorial](https://www.pythonguis.com/tutorials/pyside6-first-steps-qt-designer/)
 
 To launch the designer, use [Running `Task`](#running-task)
+
+## System Architecture
+
+This project implements a propositional logic evaluator using a modular architecture that separates the system into distinct components: GUI, Lexer, Parser, and Evaluation.
+
+### Components
+
+- **GUI (main.py, main.ui, ui.py)**  
+  Handles user interaction using PySide6. Users input expressions through the interface, and results are displayed dynamically.
+
+- **Lexer (lexica.py)**  
+  Tokenizes the input string into logical symbols using the SLY library.  
+  Supported tokens:
+  - `t`, `f` → truth values  
+  - `^` → AND  
+  - `v` → OR  
+
+- **Parser (parsers.py)**  
+  Parses tokens based on defined grammar rules and evaluates expressions.  
+  It also generates the equivalent prefix notation.
+
+- **Memory (memory.py)**  
+  Included for future variable support (currently not used).
+
+---
+
+### Data Flow
+
+1. User enters an expression (e.g., `t v f ^ t`) in the GUI  
+2. Input is passed to the lexer → converted into tokens  
+3. Parser processes tokens:
+   - Applies precedence rules (`^` before `v`)
+   - Evaluates the expression
+   - Generates prefix notation  
+4. Output is returned as:
+   - Boolean result (`TRUE` / `FALSE`)
+   - Prefix expression (e.g., `v t ^ f t`)  
+5. GUI displays the result and prefix
+
+GUI -> Lexer -> Parser -> Evaluation -> Output
+---
+
+## Running the program
+```
+python -m src.components.parsers
+python -m src.components.lexica
+python -m src.main
+```
