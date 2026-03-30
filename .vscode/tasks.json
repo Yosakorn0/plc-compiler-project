@@ -4,17 +4,17 @@
         {
             "label": "start app",
             "type": "shell",
-            "command": "uv run src/example/main.py"
+            "command": "uv run src/main.py"
         },
         {
             "label": "start designer",
             "type": "shell",
-            "command": "uv run pyside6-designer src/example/components/main.ui"
+            "command": "uv run pyside6-designer src/components/main.ui"
         },
         {
             "label": "compile designer",
             "type": "shell",
-            "command": "uv run pyside6-uic src/example/components/main.ui -o src/example/components/ui.py"
+            "command": "uv run pyside6-uic src/components/main.ui -o src/example/components/ui.py"
         },
 	]
 }

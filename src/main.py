@@ -47,6 +47,9 @@ class MainWindow(QMainWindow):
         # Bind equal button to evaluate the expression
         self.ui.button_equal.clicked.connect(self.push_equal)
 
+        # clear method
+        self.ui.button_clear.clicked.connect(self.handle_clear)
+
     # def push_1(self):
     #     current_text:str = self.ui.input_text.text()
     #     self.ui.input_text.setText(f"{current_text}1")
@@ -81,6 +84,19 @@ class MainWindow(QMainWindow):
 
         # for debug
         print(memory)
+    
+    def handle_clear(self):
+        # Use self.ui.input_text because that is what you used in push()
+        self.ui.input_text.clear() 
+        
+        # Use self.ui.output_label because that is where you display results
+        self.ui.output_label.setText("Result: \nPrefix: ")
+        
+        # Optional: Clear the LCD as well
+        self.ui.output_lcd.display(0)
+        
+        # Set focus back to the input
+        self.ui.input_text.setFocus()
 
 if __name__ == "__main__":
     app = QApplication(sys.argv)

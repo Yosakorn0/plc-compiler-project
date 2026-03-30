@@ -9,14 +9,15 @@ class MyParser(Parser):
     start = 'statement'  # Starting grammar symbol
     # Get the token list from the lexer (required)
     tokens = MyLexer.tokens
-    # Lower rows = higher precedence. So the parser reads it top → bottom.
+    # Lower rows = higher eedence. So the parser reads it top → bottom.
     # precedence = (
     #     ('left', "+", MINUS),         (associativity, operator1, operator2, ...),
     #     ('left', TIMES, DIVIDE),      (associativity, operator1, operator2, ...),
     #     ('right', UMINUS),            (associativity, operator1, operator2, ...),
+    #     ('left', OR, AND)             # Equal priority
     #     )
 
-    # Operator precedence: AND has higher precedence than OR
+    # Operator precedence: AND has higher precedence than OR. Bottommost have higher priority. 
     # same line = same priority
     precedence = (
         ('left', OR),    # Left-associative OR
@@ -115,7 +116,7 @@ if __name__ == "__main__":
 #     start = 'statement'
 #     # Get the token list from the lexer (required)
 #     tokens = MyLexer.tokens
-#     precedence = (
+#     eedence = (
 #         ('left', "+", MINUS),
 #         # ('left', TIMES, DIVIDE),
 #         # ('right', UMINUS),

@@ -68,7 +68,12 @@ class Ui_MainWindow(object):
         self.button_equal = QPushButton(self.centralwidget)
         self.button_equal.setObjectName(u"button_equal")
 
-        self.buttonLayout.addWidget(self.button_equal, 0, 4, 1, 1)
+        self.buttonLayout.addWidget(self.button_equal, 1, 4, 1, 1)
+
+        self.button_clear = QPushButton(self.centralwidget)
+        self.button_clear.setObjectName(u"button_clear")
+
+        self.buttonLayout.addWidget(self.button_clear, 1, 5, 1, 1)
 
 
         self.verticalLayout.addLayout(self.buttonLayout)
@@ -82,8 +87,7 @@ class Ui_MainWindow(object):
 
         self.output_lcd = QLCDNumber(self.centralwidget)
         self.output_lcd.setObjectName(u"output_lcd")
-        self.output_lcd.setDigitCount(9)
-        self.output_lcd.setSegmentStyle(QLCDNumber.Flat)
+        self.output_lcd.setDigitCount(1)
 
         self.outputLayout.addWidget(self.output_lcd)
 
@@ -104,13 +108,14 @@ class Ui_MainWindow(object):
     # setupUi
 
     def retranslateUi(self, MainWindow):
-        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"MainWindow", None))
+        MainWindow.setWindowTitle(QCoreApplication.translate("MainWindow", u"Propositional Logic Evaluator", None))
         self.input_label.setText(QCoreApplication.translate("MainWindow", u"Input:", None))
         self.button_1.setText(QCoreApplication.translate("MainWindow", u"t", None))
         self.button_2.setText(QCoreApplication.translate("MainWindow", u"f", None))
         self.button_and.setText(QCoreApplication.translate("MainWindow", u"^", None))
         self.button_or.setText(QCoreApplication.translate("MainWindow", u"v", None))
         self.button_equal.setText(QCoreApplication.translate("MainWindow", u"=", None))
+        self.button_clear.setText(QCoreApplication.translate("MainWindow", u"Clear", None))
         self.output_label.setText(QCoreApplication.translate("MainWindow", u"Output:", None))
     # retranslateUi
 

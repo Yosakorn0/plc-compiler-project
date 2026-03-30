@@ -1,20 +1,14 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <ui version="4.0">
  <class>MainWindow</class>
-
  <widget class="QMainWindow" name="MainWindow">
   <property name="windowTitle">
-   <string>MainWindow</string>
+   <string>Propositional Logic Evaluator</string>
   </property>
-
   <widget class="QWidget" name="centralwidget">
-
    <layout class="QVBoxLayout" name="verticalLayout">
-
-    <!-- Input Row -->
     <item>
      <layout class="QHBoxLayout" name="inputLayout">
-
       <item>
        <widget class="QLabel" name="input_label">
         <property name="text">
@@ -22,19 +16,14 @@
         </property>
        </widget>
       </item>
-
       <item>
        <widget class="QLineEdit" name="input_text"/>
       </item>
-
      </layout>
     </item>
 
-    <!-- Button Grid -->
     <item>
      <layout class="QGridLayout" name="buttonLayout">
-
-    <!-- button 1 = "t"  -->
       <item row="0" column="0">
        <widget class="QPushButton" name="button_1">
         <property name="text">
@@ -42,8 +31,6 @@
         </property>
        </widget>
       </item>
-
-    <!-- button 2 = "f"  -->
       <item row="0" column="1">
        <widget class="QPushButton" name="button_2">
         <property name="text">
@@ -51,8 +38,6 @@
         </property>
        </widget>
       </item>
-
-    <!-- button_and = "^"  -->
       <item row="0" column="2">
        <widget class="QPushButton" name="button_and">
         <property name="text">
@@ -60,8 +45,6 @@
         </property>
        </widget>
       </item>
-
-    <!-- button_or = "v"  -->
       <item row="0" column="3">
        <widget class="QPushButton" name="button_or">
         <property name="text">
@@ -69,23 +52,25 @@
         </property>
        </widget>
       </item>
-
-      <item row="0" column="4">
+      <item row="1" column="4">
        <widget class="QPushButton" name="button_equal">
         <property name="text">
          <string>=</string>
         </property>
        </widget>
       </item>
-
+      <item row="1" column="5">
+       <widget class="QPushButton" name="button_clear">
+        <property name="text">
+         <string>Clear</string>
+        </property>
+       </widget>
+      </item>
      </layout>
     </item>
 
-
-    <!-- Output Row -->
     <item>
      <layout class="QHBoxLayout" name="outputLayout">
-
       <item>
        <widget class="QLabel" name="output_label">
         <property name="text">
@@ -93,30 +78,20 @@
         </property>
        </widget>
       </item>
-
       <item>
-       <widget class="QLabel" name="output_lcd">
+       <widget class="QLCDNumber" name="output_lcd">
         <property name="digitCount">
-         <number>9</number>
-        </property>
-        <property name="segmentStyle">
-         <enum>QLabel::Flat</enum>
+         <number>1</number>
         </property>
        </widget>
       </item>
-
      </layout>
     </item>
-
    </layout>
-
   </widget>
-
   <widget class="QMenuBar" name="menubar"/>
   <widget class="QStatusBar" name="statusbar"/>
-
  </widget>
-
  <resources/>
  <connections/>
 </ui>
