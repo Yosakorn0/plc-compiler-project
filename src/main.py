@@ -69,18 +69,28 @@ class MainWindow(QMainWindow):
         input_text = self.ui.input_text.text()
 
         # Tokenize and parse the input expression
-        value, prefix = parser.parse(lexer.tokenize(input_text))
-        print(type(value), type(prefix))  # Debug: types of result
-        print(f"Value: {value}")  # Debug: boolean result
-        print(f"Prefix: {prefix}")  # Debug: prefix notation
+        result_node = parser.parse(lexer.tokenize(input_text))
+        
+        if result_node:
+            value = result_node.value
+            prefix = result_node.prefix
+            
+            print(f"AST Root Node: {result_node}")  # Debug: AST structure
+            print("\nVisual Tree Structure:")
+            print(result_node.visualize())  # SHOW THE TREE!
+            
+            print(f"Value: {value}")  # Debug: boolean result
+            print(f"Prefix: {prefix}")  # Debug: prefix notation
 
-        # Convert boolean to TRUE/FALSE string
-        result_text = "TRUE" if value else "FALSE"
+            # Convert boolean to TRUE/FALSE string
+            result_text = "TRUE" if value else "FALSE"
 
-        # Update the label with out_put label and show the result in T and F with prefix
-        self.ui.output_label.setText(f"Result: {result_text}\nPrefix: {prefix}")
-        # Output bool value
-        self.ui.output_lcd.display(int(value))  # True -> 1, False -> 0
+            # Update the label with out_put label and show the result in T and F with prefix
+            self.ui.output_label.setText(f"Result: {result_text}\nPrefix: {prefix}")
+            # Output bool value
+            self.ui.output_lcd.display(int(value))  # True -> 1, False -> 0
+        else:
+            self.ui.output_label.setText("Error: Invalid Expression")
 
         # for debug
         print(memory)

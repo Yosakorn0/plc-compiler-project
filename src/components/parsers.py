@@ -2,6 +2,7 @@
 from .lexica import MyLexer
 from .memory import Memory
 from sly import Parser
+from .ast.statement import Expression, Expression_math, Expression_number, Operations
 
 # Parser class for propositional logic expressions using sly library
 class MyParser(Parser):
@@ -44,54 +45,33 @@ class MyParser(Parser):
         return p.expr
 
     # Grammar rule: expr → expr AND expr
-    # Evaluates logical AND of two expressions
+    # Evaluates logical AND of two expressions and returns an AST node
     @_('expr AND expr')
     def expr(self, p):
-        # Extract boolean values from subexpressions
-        value1 = p.expr0[0]
-        value2 = p.expr1[0]
-
-        # Extract prefix notations
-        prefix1 = p.expr0[1]
-        prefix2 = p.expr1[1]
-
-        # Evaluate AND operation
-        value = value1 and value2
-
-        # Build prefix expression: ^ prefix1 prefix2
-        prefix = "^ " + prefix1 + " " + prefix2
-
-        print(f"Evaluating AND: {value1} ^ {value2} -> {value}")  # Debug output
-        return value, prefix
+        # Create a binary operation node for AND
+        node = Expression_math(operation=Operations.AND, parameter1=p.expr0, parameter2=p.expr1)
+        print(f"AST Node Created: {node.operation.name} (Value: {node.value})")
+        return node
 
     # Grammar rule: expr → expr OR expr
-    # Evaluates logical OR of two expressions
+    # Evaluates logical OR of two expressions and returns an AST node
     @_('expr OR expr')
     def expr(self, p):
-        # Extract boolean values from subexpressions
-        value1 = p.expr0[0]
-        value2 = p.expr1[0]
-
-        # Extract prefix notations
-        prefix1 = p.expr0[1]
-        prefix2 = p.expr1[1]
-
-        # Evaluate OR operation
-        value = value1 or value2
-
-        # Build prefix expression: v prefix1 prefix2
-        prefix = "v " + prefix1 + " " + prefix2
-
-        print(f"Evaluating OR: {value1} v {value2} -> {value}")  # Debug output
-        return value, prefix
+        # Create a binary operation node for OR
+        node = Expression_math(operation=Operations.OR, parameter1=p.expr0, parameter2=p.expr1)
+        print(f"AST Node Created: {node.operation.name} (Value: {node.value})")
+        return node
     
     # Grammar rule: expr → TRUTH
-    # Base case: single truth value (t or f)
+    # Base case: single truth value (t or f) returns an AST leaf node
     @_('TRUTH')
     def expr(self, p):
-        print(f"Reading TRUTH token: {p.TRUTH}")  # Debug output
-        # Convert 't' to True, 'f' to False; return tuple (bool, prefix)
-        return p.TRUTH == 't', p.TRUTH
+        # Convert 't' to True, 'f' to False
+        val = (p.TRUTH == 't')
+        # Create a leaf node representing the truth value
+        node = Expression_number(number=val, prefix=p.TRUTH)
+        print(f"AST Leaf Created: {p.TRUTH} (Value: {val})")
+        return node
 
 
 if __name__ == "__main__":
@@ -104,10 +84,13 @@ if __name__ == "__main__":
     # Memory is not used because propositional logic evaluator does not require variable storage
     # memory = Memory() 
     parser = MyParser()
-    # text = "1 + 2 + 3"  # Not used for logic
-    result = parser.parse(lexer.tokenize(text))  # Parse and evaluate
-    print(result)  # Output: (bool_value, prefix_notation)
-    # print(memory)  # Not used
+    result_node = parser.parse(lexer.tokenize(text))
+    
+    if result_node:
+        print(f"\nFinal Value: {result_node.value}")
+        print(f"Final Prefix: {result_node.prefix}")
+        print("\nVisual Tree Structure:")
+        print(result_node.visualize())
 
 
 # from components.ast.statement import Expression, Expression_math, Expression_number, Operations

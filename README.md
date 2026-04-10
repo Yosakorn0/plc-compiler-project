@@ -194,6 +194,8 @@
   5. GUI displays the result and prefix
 
   GUI -> Lexer -> Parser -> Evaluation -> Output
+  Input → Tokens → Parser → Structure (Tree) → Evaluation + Prefix
+  Modify grammar => mirror change in parser => update evaluation logic
   ---
 
   ## Running the program
